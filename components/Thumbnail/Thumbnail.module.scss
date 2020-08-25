@@ -1,0 +1,14 @@
+.thumbnail {
+    &__image {
+        width: 100%;
+
+        &--small {
+            width: 100px;
+        }
+    }
+
+    &__caption {
+        color: red;
+        text-align: center;
+    }
+}
