@@ -48,7 +48,7 @@ const ShowDetails = ({
 export async function getServerSideProps({ query }) {
   try {
     const { showId } = query;
-    const res = await axios.get(`https://api.tvmaze.com/shows/${showId}?embed=cast`);
+    const res = await axios.get(`http://api.tvmaze.com/shows/${showId}?embed=cast`);
     return {
       props: {
         show: res.data,

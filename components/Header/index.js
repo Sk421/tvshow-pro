@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
+import nookies from 'nookies';
 
 const countries = [
   {
@@ -20,6 +21,13 @@ const Header = () => {
   const router = useRouter();
   const [country, setCountry] = useState(router.query.country);
 
+  useEffect(()=> {
+    nookies.set(null, 'defaultCountry', country, {
+      maxAge: 30 * 24 * 60 * 60,
+      path: '/',
+    });
+  }, [country]);
+  
   const handleChange = e => {
     const selectedCountry = e.target.value;
     setCountry(selectedCountry);
