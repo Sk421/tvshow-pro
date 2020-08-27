@@ -6,12 +6,15 @@ const Cast = ({ cast }) => {
       const {
         image,
         name,
+        id,
       } = castItem.person;
       return (
         <li key={index}>
           <Thumbnail
             imageUrl={(image && image.medium) || undefined}
             caption={name}
+            href={`/cast?personId=${id}`}
+            as={`/cast/${id}`}
             small
           />
         </li>
