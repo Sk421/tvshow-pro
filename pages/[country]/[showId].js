@@ -2,6 +2,10 @@ import axios from 'axios';
 import Error from 'next/error';
 
 import Cast from '../../components/Cast';
+import {
+	withAuthorization,
+	withAuthServerSideProps,
+} from '../../utils/withAuthorization';
 // import CustomError from '../_error';
 
 const ShowDetails = ({
@@ -45,9 +49,9 @@ const ShowDetails = ({
   );
 };
 
-export async function getServerSideProps({ query }) {
+const getComponentServerSideProps = async (props) => {
   try {
-    const { showId } = query;
+    const { showId } = props.query;
     const res = await axios.get(`http://api.tvmaze.com/shows/${showId}?embed=cast`);
     return {
       props: {
@@ -63,4 +67,8 @@ export async function getServerSideProps({ query }) {
   }
 }
 
-export default ShowDetails;
+export const getServerSideProps = withAuthServerSideProps(
+	getComponentServerSideProps
+);
+
+export default withAuthorization(ShowDetails);

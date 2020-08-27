@@ -1,6 +1,9 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import nookies from 'nookies';
+import Link from 'next/link';
+
+import { isAuthenticated } from '../../utils/withAuthorization';
 
 const countries = [
   {
@@ -21,13 +24,15 @@ const Header = () => {
   const router = useRouter();
   const [country, setCountry] = useState(router.query.country);
 
-  useEffect(()=> {
-    nookies.set(null, 'defaultCountry', country, {
-      maxAge: 30 * 24 * 60 * 60,
-      path: '/',
-    });
+  useEffect(() => {
+    if(country) {
+      nookies.set(null, 'defaultCountry', country, {
+        maxAge: 30 * 24 * 60 * 60,
+        path: '/',
+      });
+    }
   }, [country]);
-  
+
   const handleChange = e => {
     const selectedCountry = e.target.value;
     setCountry(selectedCountry);
@@ -40,12 +45,21 @@ const Header = () => {
     );
   }
 
+  const handleSignout = () => {
+    nookies.destroy(null, 'token');
+  }
+
   return (
     <div className="header">
       <select onChange={handleChange} value={country}>
         {renderCountries()}
       </select>
-
+      {
+        isAuthenticated() &&
+        <Link href="/[country]" as={`/${country}`}>
+          <a onClick={handleSignout}>Signout</a>
+        </Link>
+      }
       <style jsx>{`
         .header {
           padding: 20px;
@@ -53,6 +67,8 @@ const Header = () => {
           color: #fff;
           margin-bottom: 10px;
           text-align: center;
+          display: flex;
+          justify-content: space-between;
         }
     `}</style>
     </div>
