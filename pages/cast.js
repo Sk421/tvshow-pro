@@ -9,7 +9,10 @@ const CastDetails = ({ person }) => {
   } = person;
   return (
     <div>
-      <img src={image.original} alt={name} />
+      {
+        image &&
+        <img src={image.original} alt={name} />
+      }
       <p>Name: {name}</p>
       <p>Gender: {gender}</p>
       <p>Birthday: {birthday}</p>
